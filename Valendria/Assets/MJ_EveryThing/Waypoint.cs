@@ -1,7 +1,5 @@
-﻿namespace MJ_EveryThing
+﻿using UnityEngine;
+public class Waypoint : MonoBehaviour
 {
-    public class Waypoint
-    {
-        
-    }
+    public EntityTypes entityType;
 }

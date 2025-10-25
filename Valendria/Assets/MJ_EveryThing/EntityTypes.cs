@@ -1,7 +1,7 @@
-﻿namespace MJ_EveryThing
+﻿using UnityEngine;
+
+[System.Serializable]
+public enum EntityTypes
 {
-    public enum EntityTypes
-    {
-        
-    }
+    TownsFolk,
 }
