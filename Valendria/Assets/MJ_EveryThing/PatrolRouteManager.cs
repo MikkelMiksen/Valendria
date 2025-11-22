@@ -50,4 +50,41 @@ public class PatrolRouteManager : MonoBehaviour
                 }
         }
 
+        //DEBUGGING HERE
+
+        private Dictionary<EntityTypes, Color> routeColors = new Dictionary<EntityTypes, Color>()
+        {
+                { EntityTypes.TownsFolk, Color.yellow },
+                { EntityTypes.Hogling, Color.red },
+                // Add more as needed
+        };
+        
+        void OnDrawGizmos()
+        {
+                if (routs == null) return;
+
+                foreach (var kvp in routs)
+                {
+                        EntityTypes type = kvp.Key;
+                        List<Transform> points = kvp.Value;
+
+                        if (points == null || points.Count < 2)
+                                continue;
+
+                        // Choose color based on entity type
+                        if (routeColors.TryGetValue(type, out Color c))
+                                Gizmos.color = c;
+                        else
+                                Gizmos.color = Color.white; // fallback
+
+                        // Draw the route as connected lines
+                        for (int i = 0; i < points.Count - 1; i++)
+                        {
+                                if (points[i] != null && points[i + 1] != null)
+                                {
+                                        Gizmos.DrawLine(points[i].position, points[i + 1].position);
+                                }
+                        }
+                }
+        }
 }
