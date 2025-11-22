@@ -8,11 +8,6 @@ public class Entity : MonoBehaviour
 
     public float walking_speed = 5f;
 
-    Transform[] waypoints = new Transform[3];
-    int currentWaypoint = 0;
-
-    void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-    }
+    protected Transform[] waypoints = new Transform[3];
+    protected int currentWaypoint = 0;
 }
