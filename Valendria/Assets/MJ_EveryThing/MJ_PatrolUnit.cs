@@ -9,7 +9,7 @@ public class MJ_PatrolUnit : Entity
 
     [SerializeField] private EntityTypes entityType = EntityTypes.TownsFolk;
 
-    public List<Transform> rout = new List<Transform>();
+    public List<Transform> rout = new();
 
     public bool isPatrolMangerReady = false;
     public bool routReady => rout.Count > 0;
@@ -27,7 +27,7 @@ public class MJ_PatrolUnit : Entity
     {
         if (isPatrolMangerReady)
         {
-            PatrolRouteManager.Instance.GetYourPatrolRoute(entityType);
+            PatrolRouteManager.Instance.GetYourPatrolRoute(entityType, this);
             isPatrolMangerReady = false;
 
             if (routReady)
@@ -47,7 +47,7 @@ public class MJ_PatrolUnit : Entity
             HandleNextWaypoint();
         }
 
-        Debug.Log("PAtrolUnit" + routReady + " : " + agent.remainingDistance);
+        Debug.Log("PatrolUnit" + routReady + " : " + agent.remainingDistance);
     }
 
     void HandleNextWaypoint()
@@ -92,7 +92,8 @@ public class MJ_PatrolUnit : Entity
 
     void SetNextDestination()
     {
-        if (rout.Count == 0) return;
+        if (rout.Count == 0)
+            return;
         agent.SetDestination(rout[currentIndex].position);
     }
 }

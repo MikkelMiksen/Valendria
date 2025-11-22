@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 121918971075875429}
   - component: {fileID: 3058750919631961875}
   m_Layer: 0
-  m_Name: waypoint
+  m_Name: Townsfolk Waypoint
   m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

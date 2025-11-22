@@ -6,15 +6,15 @@ public class PatrolRouteManager : MonoBehaviour
 {
         public static PatrolRouteManager Instance; void Awake() { Instance = this; }
 
-        [SerializeField]
-        private Dictionary<EntityTypes, List<Transform>> routs = new Dictionary<EntityTypes, List<Transform>>();
+
+        public Dictionary<EntityTypes, List<Transform>> routs = new Dictionary<EntityTypes, List<Transform>>();
 
         private GameObject[] patrollingEntities;
 
         IEnumerator Start()
         {
                 yield return new WaitForSeconds(10f);
-                //Geyying routs with waypoint types
+                //Getting routs with waypoint types
                 GameObject[] waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
                 foreach (var waypoint in waypoints)
                 {
@@ -37,17 +37,16 @@ public class PatrolRouteManager : MonoBehaviour
                 }
         }
 
-        public void GetYourPatrolRoute(EntityTypes entityType)
+        public void GetYourPatrolRoute(EntityTypes entityType, MJ_PatrolUnit unit)
         {
                 if (routs.ContainsKey(entityType))
                 {
-                        MJ_PatrolUnit.Instance.rout.AddRange(routs[entityType]);
-                        Debug.Log(entityType + " had rout assigned to it's list");
+                        unit.rout.AddRange(routs[entityType]);
+                        Debug.Log(entityType + " had rout assigned to its list");
                 }
-
-                if (MJ_PatrolUnit.Instance.rout.Count == 0)
+                else
                 {
-                        Debug.Log(" - - - No route found - - - ");
+                        Debug.Log(" - - - No route found for: " + entityType);
                 }
         }
 
