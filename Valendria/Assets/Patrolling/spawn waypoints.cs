@@ -6,6 +6,7 @@ public class RandomSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> prefabToSpawn = new();
     [SerializeField] private int spawnCount = 10;
 
+
     void Start()
     {
         for (int i = 0; i < spawnCount; i++)
