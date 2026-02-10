@@ -13,7 +13,7 @@ public class PatrolRouteManager : MonoBehaviour
 
         IEnumerator Start()
         {
-                yield return new WaitForSeconds(10f);
+                yield return new WaitForSeconds(3f);
                 //Getting routs with waypoint types
                 GameObject[] waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
                 foreach (var waypoint in waypoints)

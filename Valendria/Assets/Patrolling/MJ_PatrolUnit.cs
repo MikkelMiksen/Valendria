@@ -47,7 +47,7 @@ public class MJ_PatrolUnit : Entity
             HandleNextWaypoint();
         }
 
-        Debug.Log("PatrolUnit" + routReady + " : " + agent.remainingDistance);
+        Debug.Log("PatrolUnit of type" + entityType + routReady + " : " + agent.remainingDistance);
     }
 
     void HandleNextWaypoint()
