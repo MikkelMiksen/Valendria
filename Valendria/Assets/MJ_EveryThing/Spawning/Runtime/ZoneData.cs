@@ -9,10 +9,18 @@ public struct EntityTypeSplit
 }
 
 [System.Serializable]
+public struct EntitySpawnConfig
+{
+    public EntityTypes type;
+    public int count;
+}
+
+[System.Serializable]
 public class ZoneData
 {
     public List<EntityTypes> allowedTypes;
     public List<Vector2> polygon; // xz points
     public int waypointCount;
     public List<EntityTypeSplit> typeSplits;
+    public List<EntitySpawnConfig> entitySpawns;
 }

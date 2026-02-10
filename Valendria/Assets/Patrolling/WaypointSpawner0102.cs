@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WaypointSpawner0102 : MonoBehaviour
 {
@@ -10,23 +11,40 @@ public class WaypointSpawner0102 : MonoBehaviour
         public GameObject prefab;
     }
 
+    [System.Serializable]
+    public struct EntityPrefabMapping
+    {
+        public EntityTypes type;
+        public GameObject prefab; // Prefab containing MJ_PatrolUnit configured for this type
+    }
+
     [Header("Data")]
     [SerializeField] private SpawnZoneData spawnZoneData;
-    [SerializeField] private List<WaypointPrefabMapping> prefabMappings = new List<WaypointPrefabMapping>();
+    [FormerlySerializedAs("prefabMappings")]
+        [SerializeField] private List<WaypointPrefabMapping> waypointPrefabMappings = new List<WaypointPrefabMapping>();
+    [SerializeField] private List<EntityPrefabMapping> entityPrefabMappings = new List<EntityPrefabMapping>();
 
     [Header("Settings")]
     [SerializeField] private float raycastDistance = 50f;
     [SerializeField] private LayerMask groundLayer = ~0;
 
-    private Dictionary<EntityTypes, GameObject> prefabMap = new Dictionary<EntityTypes, GameObject>();
+    private Dictionary<EntityTypes, GameObject> waypointPrefabMap = new Dictionary<EntityTypes, GameObject>();
+    private Dictionary<EntityTypes, GameObject> entityPrefabMap = new Dictionary<EntityTypes, GameObject>();
 
     private void Awake()
     {
-        foreach (var mapping in prefabMappings)
+        foreach (var mapping in waypointPrefabMappings)
         {
-            if (mapping.prefab != null && !prefabMap.ContainsKey(mapping.type))
+            if (mapping.prefab != null && !waypointPrefabMap.ContainsKey(mapping.type))
             {
-                prefabMap.Add(mapping.type, mapping.prefab);
+                waypointPrefabMap.Add(mapping.type, mapping.prefab);
+            }
+        }
+        foreach (var mapping in entityPrefabMappings)
+        {
+            if (mapping.prefab != null && !entityPrefabMap.ContainsKey(mapping.type))
+            {
+                entityPrefabMap.Add(mapping.type, mapping.prefab);
             }
         }
     }
@@ -39,18 +57,18 @@ public class WaypointSpawner0102 : MonoBehaviour
             return;
         }
 
-        SpawnAllWaypoints();
+        SpawnAllForZones();
     }
 
-    private void SpawnAllWaypoints()
+    private void SpawnAllForZones()
     {
         foreach (var zone in spawnZoneData.zones)
         {
-            SpawnWaypointsForZone(zone);
+            SpawnForZone(zone);
         }
     }
 
-    private void SpawnWaypointsForZone(ZoneData zone)
+    private void SpawnForZone(ZoneData zone)
     {
         if (zone.polygon == null || zone.polygon.Count < 3) return;
 
@@ -79,7 +97,7 @@ public class WaypointSpawner0102 : MonoBehaviour
         }
         else if (zone.allowedTypes != null && zone.allowedTypes.Count > 0)
         {
-            // If no splits, but allowed types, split equally or just use the first one
+            // If no splits, but allowed types, assign all to first allowed type
             EntityTypes fallbackType = zone.allowedTypes[0];
             countsPerType[fallbackType] = totalToSpawn;
         }
@@ -89,19 +107,23 @@ public class WaypointSpawner0102 : MonoBehaviour
             return;
         }
 
-        // Spawn for each type
+        // Keep a per-zone route for each type in this polygon
+        Dictionary<EntityTypes, List<Transform>> zoneRoutes = new Dictionary<EntityTypes, List<Transform>>();
+
+        // Spawn waypoints for each type IN THIS ZONE ONLY
         foreach (var kvp in countsPerType)
         {
             EntityTypes type = kvp.Key;
             int count = kvp.Value;
 
-            if (!prefabMap.ContainsKey(type))
+            if (!waypointPrefabMap.ContainsKey(type))
             {
-                Debug.LogWarning($"No prefab mapping for EntityType: {type}");
+                Debug.LogWarning($"No waypoint prefab mapping for EntityType: {type}");
                 continue;
             }
 
-            GameObject prefab = prefabMap[type];
+            GameObject prefab = waypointPrefabMap[type];
+            var route = new List<Transform>(count);
 
             for (int i = 0; i < count; i++)
             {
@@ -113,6 +135,53 @@ public class WaypointSpawner0102 : MonoBehaviour
                     Waypoint wp = go.GetComponent<Waypoint>();
                     if (wp == null) wp = go.AddComponent<Waypoint>();
                     wp.entityType = type;
+                    route.Add(go.transform);
+                }
+            }
+
+            if (route.Count > 0)
+            {
+                zoneRoutes[type] = route;
+                // Optional: register with PatrolRouteManager for gizmo drawing/central tracking
+                if (PatrolRouteManager.Instance != null)
+                {
+                    PatrolRouteManager.Instance.RegisterRoute(type, route);
+                }
+            }
+        }
+
+        // Now spawn entities for this zone and assign the zone's route for their type
+        if (zone.entitySpawns != null)
+        {
+            foreach (var spawnCfg in zone.entitySpawns)
+            {
+                if (!entityPrefabMap.TryGetValue(spawnCfg.type, out var entityPrefab))
+                {
+                    Debug.LogWarning($"No entity prefab mapping for EntityType: {spawnCfg.type}");
+                    continue;
+                }
+
+                if (!zoneRoutes.TryGetValue(spawnCfg.type, out var route) || route == null || route.Count == 0)
+                {
+                    Debug.LogWarning($"No route generated in this zone for EntityType: {spawnCfg.type}");
+                    continue;
+                }
+
+                for (int i = 0; i < spawnCfg.count; i++)
+                {
+                    // Spawn at the first waypoint or a random waypoint from the route
+                    var spawnAt = route[Random.Range(0, route.Count)];
+                    var unitGO = Instantiate(entityPrefab, spawnAt.position, Quaternion.identity);
+                    unitGO.tag = "Patrolling";
+                    var unit = unitGO.GetComponent<MJ_PatrolUnit>();
+                    if (unit != null)
+                    {
+                        unit.AssignRoute(route);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Spawned entity prefab for {spawnCfg.type} has no MJ_PatrolUnit component.");
+                    }
                 }
             }
         }

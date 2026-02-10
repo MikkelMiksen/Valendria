@@ -17,22 +17,36 @@ public class MJ_PatrolUnit : Entity
     private int currentIndex = 0;
     private int direction = 1; // 1 = forward, -1 = backward
 
+    [Header("Variation Settings")]
+    [SerializeField] private float speedVariation = 1.5f;
+
     void Awake()
     {
         Instance = this;
         agent = GetComponent<NavMeshAgent>();
+        
+        // Randomize speed
+        if (agent != null)
+        {
+            float baseSpeed = agent.speed;
+            agent.speed = baseSpeed + Random.Range(-speedVariation, speedVariation);
+        }
+
+        direction = Random.Range(0, 2) == 0 ? 1 : -1;
     }
 
     void Update()
     {
-        if (isPatrolMangerReady)
+        // Only request a route from the manager if we don't already have one
+        if (isPatrolMangerReady && !routReady)
         {
             PatrolRouteManager.Instance.GetYourPatrolRoute(entityType, this);
             isPatrolMangerReady = false;
 
             if (routReady)
             {
-                currentIndex = 0;
+                currentIndex = Random.Range(0, rout.Count);
+                direction = Random.Range(0, 2) == 0 ? 1 : -1;
                 SetNextDestination();
             }
         }
@@ -48,6 +62,17 @@ public class MJ_PatrolUnit : Entity
         }
 
         Debug.Log("PatrolUnit of type" + entityType + routReady + " : " + agent.remainingDistance);
+    }
+
+    public void AssignRoute(List<Transform> route)
+    {
+        rout = route ?? new List<Transform>();
+        if (routReady)
+        {
+            currentIndex = Random.Range(0, rout.Count);
+            direction = Random.Range(0, 2) == 0 ? 1 : -1;
+            SetNextDestination();
+        }
     }
 
     void HandleNextWaypoint()

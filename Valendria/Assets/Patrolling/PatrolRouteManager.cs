@@ -6,25 +6,25 @@ public class PatrolRouteManager : MonoBehaviour
 {
         public static PatrolRouteManager Instance; void Awake() { Instance = this; }
 
-
+        // Legacy: aggregated per-type routes (merged from all polygons)
         public Dictionary<EntityTypes, List<Transform>> routs = new Dictionary<EntityTypes, List<Transform>>();
+        // New: per-type list of per-polygon routes
+        public Dictionary<EntityTypes, List<List<Transform>>> routesByType = new Dictionary<EntityTypes, List<List<Transform>>>();
 
         private GameObject[] patrollingEntities;
 
         IEnumerator Start()
         {
                 yield return new WaitForSeconds(3f);
-                //Getting routs with waypoint types
+                // Legacy aggregation (kept for backwards compatibility and fallback)
                 GameObject[] waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
                 foreach (var waypoint in waypoints)
                 {
                         var type = waypoint.GetComponent<Waypoint>().entityType;
 
-                        // Ensure the key exists
                         if (!routs.ContainsKey(type))
                                 routs[type] = new List<Transform>();
 
-                        // Add the waypoint to the correct list
                         routs[type].Add(waypoint.transform);
                 }
 
@@ -35,6 +35,17 @@ public class PatrolRouteManager : MonoBehaviour
                 {
                         patrollingEntity.GetComponent<MJ_PatrolUnit>().isPatrolMangerReady = true;
                 }
+        }
+
+        public void RegisterRoute(EntityTypes entityType, List<Transform> route)
+        {
+                if (route == null || route.Count == 0) return;
+                if (!routesByType.TryGetValue(entityType, out var list))
+                {
+                        list = new List<List<Transform>>();
+                        routesByType[entityType] = list;
+                }
+                list.Add(route);
         }
 
         public void GetYourPatrolRoute(EntityTypes entityType, MJ_PatrolUnit unit)
@@ -61,28 +72,49 @@ public class PatrolRouteManager : MonoBehaviour
         
         void OnDrawGizmos()
         {
-                if (routs == null) return;
-
-                foreach (var kvp in routs)
+                // Draw legacy aggregated routes
+                if (routs != null)
                 {
-                        EntityTypes type = kvp.Key;
-                        List<Transform> points = kvp.Value;
-
-                        if (points == null || points.Count < 2)
-                                continue;
-
-                        // Choose color based on entity type
-                        if (routeColors.TryGetValue(type, out Color c))
-                                Gizmos.color = c;
-                        else
-                                Gizmos.color = Color.white; // fallback
-
-                        // Draw the route as connected lines
-                        for (int i = 0; i < points.Count - 1; i++)
+                        foreach (var kvp in routs)
                         {
-                                if (points[i] != null && points[i + 1] != null)
+                                EntityTypes type = kvp.Key;
+                                List<Transform> points = kvp.Value;
+
+                                if (points == null || points.Count < 2)
+                                        continue;
+
+                                if (routeColors.TryGetValue(type, out Color c)) Gizmos.color = c; else Gizmos.color = Color.white;
+
+                                for (int i = 0; i < points.Count - 1; i++)
                                 {
-                                        Gizmos.DrawLine(points[i].position, points[i + 1].position);
+                                        if (points[i] != null && points[i + 1] != null)
+                                        {
+                                                Gizmos.DrawLine(points[i].position, points[i + 1].position);
+                                        }
+                                }
+                        }
+                }
+
+                // Draw per-zone routes
+                if (routesByType != null)
+                {
+                        foreach (var kvp in routesByType)
+                        {
+                                EntityTypes type = kvp.Key;
+                                if (routeColors.TryGetValue(type, out Color c)) Gizmos.color = c; else Gizmos.color = Color.white;
+
+                                var routes = kvp.Value;
+                                if (routes == null) continue;
+                                foreach (var route in routes)
+                                {
+                                        if (route == null || route.Count < 2) continue;
+                                        for (int i = 0; i < route.Count - 1; i++)
+                                        {
+                                                if (route[i] != null && route[i + 1] != null)
+                                                {
+                                                        Gizmos.DrawLine(route[i].position, route[i + 1].position);
+                                                }
+                                        }
                                 }
                         }
                 }

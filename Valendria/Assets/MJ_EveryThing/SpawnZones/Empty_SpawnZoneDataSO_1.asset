@@ -14,23 +14,89 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldRadius: 50
   zones:
-  - allowedTypes: 00000000
+  - allowedTypes: 0000000001000000
     polygon:
-    - {x: 44.85136, y: 48.363686}
-    - {x: 43.04023, y: 3.8834066}
-    - {x: 4.19455, y: 6.013542}
-    - {x: 4.758675, y: 44.76632}
-    waypointCount: 50
+    - {x: 47.1, y: 47.9743}
+    - {x: 47.186478, y: 30.875816}
+    - {x: 32.097313, y: 30.14769}
+    - {x: 32.835503, y: 47.52956}
+    waypointCount: 5
     typeSplits:
     - type: 0
       percentage: 1
-  - allowedTypes: 01000000
-    polygon:
-    - {x: -8.947897, y: -3.615079}
-    - {x: -8.971652, y: -43.11769}
-    - {x: -44.757347, y: -40.764267}
-    - {x: -43.591938, y: -4.7077293}
-    waypointCount: 20
-    typeSplits:
     - type: 1
-      percentage: 1
+      percentage: 0
+    entitySpawns:
+    - type: 0
+      count: 2
+  - allowedTypes: 0000000001000000
+    polygon:
+    - {x: 46.1, y: -2.4575248}
+    - {x: 46.12626, y: -41.84028}
+    - {x: 30.185417, y: -39.293293}
+    - {x: 29.221354, y: -2.0836606}
+    waypointCount: 8
+    typeSplits:
+    - type: 0
+      percentage: 0.9
+    - type: 1
+      percentage: 0.1
+    entitySpawns:
+    - type: 0
+      count: 6
+    - type: 1
+      count: 2
+  - allowedTypes: 0000000001000000
+    polygon:
+    - {x: 40.621002, y: 40.836864}
+    - {x: 38.066635, y: -33.212856}
+    - {x: -5.8527794, y: -1.5296845}
+    waypointCount: 8
+    typeSplits:
+    - type: 0
+      percentage: 0.6
+    - type: 1
+      percentage: 0.4
+    entitySpawns:
+    - type: 0
+      count: 3
+    - type: 1
+      count: 1
+  - allowedTypes: 0000000001000000
+    polygon:
+    - {x: 15.660621, y: 0.09259074}
+    - {x: 9.295514, y: -12.740242}
+    - {x: -0.13301961, y: -15.661345}
+    - {x: -9.560178, y: -10.252434}
+    - {x: -12.887844, y: 0.43507633}
+    - {x: -6.0939426, y: 9.940595}
+    - {x: 0.74195766, y: 13.838467}
+    - {x: 10.79267, y: 9.629398}
+    waypointCount: 15
+    typeSplits:
+    - type: 0
+      percentage: 0.6
+    - type: 1
+      percentage: 0.4
+    entitySpawns:
+    - type: 0
+      count: 5
+    - type: 1
+      count: 8
+  - allowedTypes: 0000000001000000
+    polygon:
+    - {x: -46.3, y: 47.352516}
+    - {x: -47.04227, y: 3.0233457}
+    - {x: -20.008364, y: 3.8953133}
+    - {x: -19.349686, y: 46.278114}
+    waypointCount: 30
+    typeSplits:
+    - type: 0
+      percentage: 0.1
+    - type: 1
+      percentage: 0.9
+    entitySpawns:
+    - type: 0
+      count: 1
+    - type: 1
+      count: 8
