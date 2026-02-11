@@ -4,6 +4,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Empty_SpawnZoneDataSO", menuName = "Scriptable Objects/SpawnZoneData")]
 public class SpawnZoneData : ScriptableObject
 {
-    public float worldRadius;
     public List<ZoneData> zones;
 }

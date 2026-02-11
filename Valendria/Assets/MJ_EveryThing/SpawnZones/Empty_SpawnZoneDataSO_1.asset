@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b92e143660e4e0396373906490f2bb6, type: 3}
   m_Name: Empty_SpawnZoneDataSO_1
   m_EditorClassIdentifier: 
-  worldRadius: 50
   zones:
   - allowedTypes: 0000000001000000
     polygon:
@@ -26,9 +25,7 @@ MonoBehaviour:
       percentage: 1
     - type: 1
       percentage: 0
-    entitySpawns:
-    - type: 0
-      count: 2
+    entitySpawns: []
   - allowedTypes: 0000000001000000
     polygon:
     - {x: 46.1, y: -2.4575248}
@@ -41,11 +38,7 @@ MonoBehaviour:
       percentage: 0.9
     - type: 1
       percentage: 0.1
-    entitySpawns:
-    - type: 0
-      count: 6
-    - type: 1
-      count: 2
+    entitySpawns: []
   - allowedTypes: 0000000001000000
     polygon:
     - {x: 40.621002, y: 40.836864}
@@ -57,11 +50,7 @@ MonoBehaviour:
       percentage: 0.6
     - type: 1
       percentage: 0.4
-    entitySpawns:
-    - type: 0
-      count: 3
-    - type: 1
-      count: 1
+    entitySpawns: []
   - allowedTypes: 0000000001000000
     polygon:
     - {x: 15.660621, y: 0.09259074}
@@ -78,11 +67,7 @@ MonoBehaviour:
       percentage: 0.6
     - type: 1
       percentage: 0.4
-    entitySpawns:
-    - type: 0
-      count: 5
-    - type: 1
-      count: 8
+    entitySpawns: []
   - allowedTypes: 0000000001000000
     polygon:
     - {x: -46.3, y: 47.352516}
@@ -95,8 +80,4 @@ MonoBehaviour:
       percentage: 0.1
     - type: 1
       percentage: 0.9
-    entitySpawns:
-    - type: 0
-      count: 1
-    - type: 1
-      count: 8
+    entitySpawns: []
