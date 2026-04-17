@@ -18,6 +18,8 @@ Early AI Patrol & Player Movement Prototype for the Valendria world.
 Some tools has been made including but does not limit to:
 
  - ![screenshot](photos/image.png)
+ - ![screenshot](photos/image_1.png)
+ - ![screenshot](photos/image_2.png)
 
 
 
