@@ -99,5 +99,3 @@ Check out fellow contributer on itch here: https://justpacey.itch.io/
  # ⚔️ Welcome to Valendria.
 
 More is coming.
-
-</div> ```
