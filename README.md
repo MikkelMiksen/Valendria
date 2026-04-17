@@ -15,7 +15,7 @@ Early AI Patrol & Player Movement Prototype for the Valendria world.
 
  # 🔰 Status
 
-Some tools has been made including but does not limit to:
+Patrolling entity in progress
 
 
 
