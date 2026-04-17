@@ -25,7 +25,11 @@ MonoBehaviour:
       percentage: 1
     - type: 1
       percentage: 0
-    entitySpawns: []
+    entitySpawns:
+    - type: 0
+      count: 50
+    - type: 1
+      count: 0
   - allowedTypes: 0000000001000000
     polygon:
     - {x: 46.1, y: -2.4575248}
@@ -38,7 +42,11 @@ MonoBehaviour:
       percentage: 0.9
     - type: 1
       percentage: 0.1
-    entitySpawns: []
+    entitySpawns:
+    - type: 0
+      count: 50
+    - type: 1
+      count: 50
   - allowedTypes: 0000000001000000
     polygon:
     - {x: 40.621002, y: 40.836864}
@@ -50,7 +58,11 @@ MonoBehaviour:
       percentage: 0.6
     - type: 1
       percentage: 0.4
-    entitySpawns: []
+    entitySpawns:
+    - type: 0
+      count: 50
+    - type: 1
+      count: 50
   - allowedTypes: 0000000001000000
     polygon:
     - {x: 15.660621, y: 0.09259074}
@@ -67,17 +79,25 @@ MonoBehaviour:
       percentage: 0.6
     - type: 1
       percentage: 0.4
-    entitySpawns: []
+    entitySpawns:
+    - type: 0
+      count: 50
+    - type: 0
+      count: 50
   - allowedTypes: 0000000001000000
     polygon:
     - {x: -46.3, y: 47.352516}
     - {x: -47.04227, y: 3.0233457}
     - {x: -20.008364, y: 3.8953133}
     - {x: -19.349686, y: 46.278114}
-    waypointCount: 30
+    waypointCount: 1000
     typeSplits:
     - type: 0
       percentage: 0.1
     - type: 1
       percentage: 0.9
-    entitySpawns: []
+    entitySpawns:
+    - type: 0
+      count: 100
+    - type: 1
+      count: 900
