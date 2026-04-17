@@ -23,9 +23,9 @@ Some tools has been made including but does not limit to:
 
 Screenshots and GIFs of NPC patrols and player movement will be added as the project evolves.
 
- - ![screenshot](photos/image.png)
- - ![screenshot](photos/image_1.png)
- - ![screenshot](photos/image_2.png)
+![screenshot](photos/image.png)
+![screenshot](photos/image_1.png)
+![screenshot](photos/image_2.png)
 
 </div>
 
